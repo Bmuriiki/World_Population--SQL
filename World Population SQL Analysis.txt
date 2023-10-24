@@ -1,0 +1,163 @@
+SELECT  *
+FROM `teak-runner-391307.World_Population.World_Population` 
+
+--Retrieving data for kenya
+-- Rank=27 in the world, latest population statistics= 54027487, Area=580367, No. of people per km2(Density per km)= 93 people, Growth rate= 1.0193, contributes to 0.68% of total population.
+SELECT  *
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Country_Territory='Kenya'
+
+
+--Top 3 countries with most population are China, India and United States
+SELECT  *
+FROM `teak-runner-391307.World_Population.World_Population` 
+order by Rank ASC
+
+--Countries with the lowest population is Vatican City, Tokelau and Niue
+SELECT  *
+FROM `teak-runner-391307.World_Population.World_Population` 
+order by Rank DESC
+
+-- There is a correlation between population and land area. The higher the land area the higher the population. Evidenced by analysis from top 3 populous countries and bottom 3 countries
+SELECT Country_Territory, _2022_Population, Area__km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Country_Territory IN ('China','India', 'United States','Vatican City', 'Tokelau', 'Niue')
+ORDER BY _2022_Population DESC
+
+
+
+--Total population per continent accross the years 
+SELECT  Continent, sum(_2022_Population) As population_2022, 
+                    sum(_2020_Population) As population_2020,
+                    sum(_2015_Population) As population_2015,
+                    sum(_2010_Population) As population_2010,
+                    sum(_2000_Population) As population_2000,
+                    sum(_1990_Population) As population_1990,
+                    sum(_1980_Population) As population_1980,
+                    sum(_1970_Population) As population_1970
+FROM `teak-runner-391307.World_Population.World_Population` 
+GROUP BY Continent
+
+--Percentage of the population in each Year
+SELECT Continent,
+       SUM(_2022_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2022,
+       SUM(_2020_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2020,
+       SUM(_2015_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2015,
+       SUM(_2010_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2010,
+       SUM(_2000_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2000,
+       SUM(_1990_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_1990,
+       SUM(_1980_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_1980,
+       SUM(_1970_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_1970
+FROM `teak-runner-391307.World_Population.World_Population` 
+GROUP BY Continent;
+
+--Africa has been having the highest population in the world from 2010
+
+SELECT Continent,
+       SUM(_2022_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2022,
+       SUM(_2020_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2020,
+       SUM(_2015_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2015,
+       SUM(_2010_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2010,
+       SUM(_2000_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_2000,
+       SUM(_1990_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_1990,
+       SUM(_1980_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_1980,
+       SUM(_1970_Population) / SUM(_2022_Population + _2020_Population + _2015_Population + _2010_Population + _2000_Population + _1990_Population + _1980_Population + _1970_Population) * 100 AS percentage_1970
+FROM `teak-runner-391307.World_Population.World_Population` 
+GROUP BY Continent
+ORDER BY percentage_2022 DESC, percentage_2020 DESC, percentage_2015 DESC, percentage_2010 DESC, percentage_2000 DESC, percentage_1990 DESC, percentage_1980 DESC, percentage_1970 DESC;
+
+--Asia has the highest area coverage followed closely by Africa
+SELECT Continent, sum(_2022_Population) as Population_2022, sum(Area__km___) as Total_Area
+FROM `teak-runner-391307.World_Population.World_Population`
+GROUP BY Continent
+ORDER BY Total_Area DESC
+
+--Asia and Africa are the top two most populous and with a big area coverage respectively. This shows there is a strong correlation between population and area covered by a continent and also a country. The bigger the area, the higher number of people. 
+SELECT Continent, sum(_2022_Population) as Population_2022, sum(Area__km___) as Total_Area
+FROM `teak-runner-391307.World_Population.World_Population`
+GROUP BY Continent
+ORDER BY Population_2022 DESC
+
+--Top 3 most populous countries in Africa is Nigeria, Ethiopia, Egypt respectively
+--Top 3 countries with biggest area in Africa are Algeria, DR Congo and Sudan
+
+SELECT  Country_Territory,Continent, _2022_Population,Area__km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Continent= 'Africa'
+ORDER BY Area__km___ DESC
+
+--Top 3 most populous countries in Asia is China, India and Indonesia respectively
+--Top 3 countries with biggest area in Asia are China, India and Kazakhstan respectively
+SELECT  Country_Territory,Continent, _2022_Population,Area__km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Continent= 'Asia'
+ORDER BY _2022_Population DESC
+--Top 3 most populous countries in Oceania are Australia, Papua New Guinea and New Zealand respectively
+--Top 3 countries with biggest area in Oceania are Oceania are Australia, Papua New Guinea and New Zealand respectively
+SELECT  Country_Territory,Continent, _2022_Population,Area__km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Continent= 'Oceania'
+ORDER BY Area__km___ DESC
+
+--Top 3 most populous countries in North America are United States, Mexico and Canada respectively
+--Top 3 countries with biggest area in North America are Oceania are Canada, United States and Greenland respectively
+SELECT  Country_Territory,Continent, _2022_Population,Area__km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Continent= 'North America'
+ORDER BY _2022_Population DESC
+
+--Top 3 most populous countries in South America are Brazil, Colombia and Argentina respectively
+--Top 3 countries with biggest area in South America are Oceania are Canada, United States and Greenland respectively
+SELECT  Country_Territory,Continent, _2022_Population,Area__km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Continent= 'South America'
+ORDER BY Area__km___ DESC
+
+--Top 3 most populous countries in Europe are Russia, Germany and United Kingdom respectively
+--Top 3 countries with biggest area in Europe are Russia, Ukraine and France respectively
+SELECT  Country_Territory,Continent, _2022_Population,Area__km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+WHERE Continent= 'Europe'
+ORDER BY _2022_Population DESC
+
+--Countries with the highest growth rate are Moldova, Poland and Niger
+SELECT  Country_Territory,Continent, Growth_Rate 
+FROM `teak-runner-391307.World_Population.World_Population` 
+ORDER BY Growth_Rate DESC
+
+--Countries with the lowest growth rate are ukraine, Lebanon and American Samoa
+SELECT  Country_Territory,Continent, Growth_Rate 
+FROM `teak-runner-391307.World_Population.World_Population` 
+ORDER BY Growth_Rate 
+
+--World_Population_Percentage
+SELECT  Country_Territory,Continent,World_Population_Percentage
+FROM `teak-runner-391307.World_Population.World_Population` 
+ORDER BY World_Population_Percentage DESC
+
+
+--Greenland, Falkland Islands and Western Sahara are the most spacious countries(least Density__per_km) where there is more space to live in while there are very few people who are in the country. For example, Greenland has 2,166,086 km2 and the population is 56,466
+SELECT  Country_Territory,Continent,_2022_Population, Area__km___, Density__per_km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+ORDER BY Density__per_km___ ASC
+
+-- Macau, Monaco and Singapore are most squezeed countries in the world with high population and low area i.e density per km
+SELECT  Country_Territory,Continent,_2022_Population, Area__km___, Density__per_km___
+FROM `teak-runner-391307.World_Population.World_Population` 
+ORDER BY Density__per_km___ DESC
+
+--Asia, Europe are the most squeezed continents i.e highest density per km respectively
+SELECT  Continent,SUM(_2022_Population) AS Population_2022, SUM(Area__km___) AS Total_Area, SUM(Density__per_km___) AS Total_Density_Per_KM
+FROM `teak-runner-391307.World_Population.World_Population`
+GROUP BY Continent
+ORDER BY Total_Density_Per_KM DESC
+
+--South America, Oceania and Africa are the most spacious countries respectively i.e lowest density per Km
+SELECT  Continent,SUM(_2022_Population) AS Population_2022, SUM(Area__km___) AS Total_Area, SUM(Density__per_km___) AS Total_Density_Per_KM
+FROM `teak-runner-391307.World_Population.World_Population`
+GROUP BY Continent
+ORDER BY Total_Density_Per_KM ASC
+
+
+
+
